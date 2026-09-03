@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mysite/app/utils/contact_utils.dart';
 import 'package:mysite/app/widgets/custom_text_heading.dart';
+import 'package:mysite/app/widgets/social_icons.dart';
 import 'package:mysite/changes/links.dart';
 import 'package:mysite/changes/strings.dart';
 import 'package:mysite/core/color/colors.dart';
@@ -13,7 +13,6 @@ class ContactMobileTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
     return Column(
       children: [
         Space.y(10.w)!,
@@ -40,22 +39,7 @@ class ContactMobileTab extends StatelessWidget {
           ),
         ),
         Space.y(10.w)!,
-        Wrap(
-            alignment: WrapAlignment.center,
-            runSpacing: 50,
-            children: contactUtils
-                .asMap()
-                .entries
-                .map((e) => IconButton(
-                      icon: Image.network(
-                        e.value.icon,
-                        color: theme.textColor,
-                      ),
-                      onPressed: () => openURL(e.value.url),
-                      highlightColor: Colors.white54,
-                      iconSize: 21,
-                    ))
-                .toList()),
+        const SocialIconsRow(),
         Space.y(5.w)!,
         Container(color: Colors.white.withValues(alpha: 0.2), height: 1),
       ],

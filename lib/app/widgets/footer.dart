@@ -1,54 +1,47 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:mysite/app/widgets/marquee_text.dart';
 import 'package:mysite/changes/links.dart';
-import 'package:mysite/core/res/responsive.dart';
 import 'package:mysite/core/util/constants.dart';
-import 'package:text_scroll/text_scroll.dart';
 
-class Footer extends StatelessWidget {
-  const Footer({Key? key}) : super(key: key);
+class Footer extends StatefulWidget {
+  const Footer({super.key});
+
+  @override
+  State<Footer> createState() => _FooterState();
+}
+
+class _FooterState extends State<Footer> {
+  late final TapGestureRecognizer _authorTap = TapGestureRecognizer()
+    ..onTap = () => openURL(gitHub);
+
+  @override
+  void dispose() {
+    _authorTap.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Responsive(
-      desktop: _desktop(context),
-      tablet: _desktop(context),
-      mobile: _mobile(context),
-    );
-  }
-
-  Widget _mobile(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    final Size size = MediaQuery.sizeOf(context);
     return Container(
-      margin: EdgeInsets.fromLTRB(0, height * 0.05, 0, 0),
-      height: height * 0.07,
-      width: width,
-      child: const Center(
-        child: TextScroll("Made with Flutter Web \u2665 by Hichem Benabadji  © 2023"),
-      ),
-    );
-  }
-
-  Widget _desktop(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-    return Container(
-      margin: EdgeInsets.fromLTRB(0, height * 0.05, 0, 0),
-      height: height * 0.07,
-      width: width,
-      child: Center(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text("Made with Flutter Web \u2665 by "),
-            InkWell(
-              onTap: () => openURL(gitHub),
-              child: const Text(
-                "Hichem Benabadji",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
+      margin: EdgeInsets.only(top: size.height * 0.05),
+      height: size.height * 0.07,
+      width: size.width,
+      alignment: Alignment.center,
+      child: MarqueeText(
+        text: TextSpan(
+          children: <InlineSpan>[
+            const TextSpan(text: 'Made with Flutter Web by '),
+            TextSpan(
+              text: 'Hichem Benabadji',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+              recognizer: _authorTap,
+              mouseCursor: SystemMouseCursors.click,
             ),
-            const Text(" © 2023"),
+            TextSpan(
+              text: ' © ${DateTime.now().year}. All rights reserved.',
+            ),
           ],
         ),
       ),
